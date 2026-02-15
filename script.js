@@ -248,18 +248,128 @@ window.addEventListener('scroll', () => {
    MOBILE MENU TOGGLE
    ============================================ */
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const navLinks = document.querySelector('.nav-links');
+const navLinks = document.getElementById('nav-links');
 
-if (mobileMenuBtn) {
+if (mobileMenuBtn && navLinks) {
     mobileMenuBtn.addEventListener('click', () => {
         mobileMenuBtn.classList.toggle('active');
+        navLinks.classList.toggle('mobile-open');
+    });
 
-        // Toggle mobile menu visibility
-        if (navLinks) {
-            navLinks.classList.toggle('mobile-open');
+    // Close menu when clicking on a link
+    const navLinkItems = navLinks.querySelectorAll('.nav-link');
+    navLinkItems.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuBtn.classList.remove('active');
+            navLinks.classList.remove('mobile-open');
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileMenuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+            mobileMenuBtn.classList.remove('active');
+            navLinks.classList.remove('mobile-open');
         }
     });
 }
+
+/* ============================================
+   MODAL FORM FUNCTIONALITY
+   ============================================ */
+const modal = document.getElementById('contact-modal');
+const modalClose = document.getElementById('modal-close');
+const contactForm = document.getElementById('contact-form');
+const openFormBtns = document.querySelectorAll('.open-form-btn');
+
+// Open modal
+openFormBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+});
+
+// Close modal
+function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+if (modalClose) {
+    modalClose.addEventListener('click', closeModal);
+}
+
+// Close modal when clicking outside
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        closeModal();
+    }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Handle form submission
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            message: document.getElementById('message').value || 'No message provided'
+        };
+
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        const originalText = submitBtn.querySelector('span').textContent;
+        submitBtn.querySelector('span').textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        try {
+            // Send email using a backend service or email API
+            // For now, we'll use mailto as a fallback
+            const subject = encodeURIComponent('New Contact Form Submission from ' + formData.name);
+            const body = encodeURIComponent(
+                `Name: ${formData.name}\n` +
+                `Phone: ${formData.phone}\n` +
+                `Email: ${formData.email}\n` +
+                `Message: ${formData.message}`
+            );
+
+            // Try to send via fetch to a backend endpoint (if configured)
+            // Otherwise, open mailto link
+            const mailtoLink = `mailto:adityabhardwaj.bd.24@gmail.com?subject=${subject}&body=${body}`;
+            window.location.href = mailtoLink;
+
+            // Show success message
+            setTimeout(() => {
+                submitBtn.querySelector('span').textContent = 'Message Sent!';
+                setTimeout(() => {
+                    closeModal();
+                    contactForm.reset();
+                    submitBtn.querySelector('span').textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 1500);
+            }, 500);
+
+        } catch (error) {
+            console.error('Error sending message:', error);
+            submitBtn.querySelector('span').textContent = 'Error! Try Again';
+            submitBtn.disabled = false;
+            setTimeout(() => {
+                submitBtn.querySelector('span').textContent = originalText;
+            }, 2000);
+        }
+    });
+}
+
 
 /* ============================================
    TYPING EFFECT (Optional Enhancement)
