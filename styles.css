@@ -296,6 +296,10 @@ header.scrolled {
     height: 300px;
 }
 
+.mobile-only {
+    display: none;
+}
+
 .mobile-menu-btn {
     display: none;
     align-items: center;
@@ -305,6 +309,13 @@ header.scrolled {
     cursor: pointer;
     padding: 10px;
     color: var(--text-primary);
+}
+
+/* Fix for Android Logo Background */
+.logo,
+.logo-icon-img {
+    background-color: transparent !important;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-menu-btn svg {
@@ -319,6 +330,13 @@ header.scrolled {
 @media (max-width: 768px) {
     .mobile-menu-btn {
         display: flex;
+    }
+
+    .mobile-only {
+        display: inline-flex;
+        margin-top: 20px;
+        width: 100%;
+        justify-content: center;
     }
 
     .nav-links {
