@@ -300,15 +300,56 @@ header.scrolled {
     display: none;
 }
 
+
 .mobile-menu-btn {
     display: none;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background: none;
     border: none;
     cursor: pointer;
     padding: 10px;
-    color: var(--text-primary);
+    width: 44px;
+    height: 44px;
+    position: relative;
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+}
+
+.hamburger-line:nth-child(1) {
+    top: 12px;
+}
+
+.hamburger-line:nth-child(2) {
+    top: 21px;
+}
+
+.hamburger-line:nth-child(3) {
+    top: 30px;
+}
+
+/* Transform to X when active */
+.mobile-menu-btn.active .hamburger-line:nth-child(1) {
+    top: 21px;
+    transform: rotate(45deg);
+}
+
+.mobile-menu-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.mobile-menu-btn.active .hamburger-line:nth-child(3) {
+    top: 21px;
+    transform: rotate(-45deg);
 }
 
 /* Fix for Android Logo Background */
@@ -318,13 +359,6 @@ header.scrolled {
     -webkit-tap-highlight-color: transparent;
 }
 
-.mobile-menu-btn svg {
-    transition: var(--transition);
-}
-
-.mobile-menu-btn.active svg {
-    transform: rotate(90deg);
-}
 
 /* Mobile Menu Styles */
 @media (max-width: 768px) {
@@ -1488,10 +1522,6 @@ header.scrolled {
 
     body {
         cursor: auto;
-    }
-
-    .nav-links {
-        display: none;
     }
 
     .mobile-menu-btn {
