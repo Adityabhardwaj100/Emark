@@ -152,6 +152,9 @@ body {
 /* ============================================
    HEADER & NAVIGATION
    ============================================ */
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
 header {
     position: fixed;
     top: 0;
@@ -160,12 +163,14 @@ header {
     z-index: 1000;
     padding: 20px 0;
     transition: var(--transition);
+    background: #000000;
+    /* Solid black header */
 }
 
 header.scrolled {
-    background: rgba(10, 10, 15, 0.8);
-    backdrop-filter: blur(var(--blur-md));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: #000000;
+    /* Keep solid black on scroll */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar {
@@ -174,6 +179,7 @@ header.scrolled {
     align-items: center;
 }
 
+/* ... (logo styles omitted) ... */
 .logo {
     display: flex;
     align-items: center;
@@ -311,26 +317,31 @@ header.scrolled {
 
 /* Mobile Menu Styles */
 @media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+    }
+
     .nav-links {
         position: fixed;
-        top: 80px;
+        top: 72px;
         left: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.98);
-        backdrop-filter: blur(var(--blur-md));
+        background: #000000;
         border-bottom: 1px solid rgba(255, 107, 53, 0.2);
         padding: 20px;
         flex-direction: column;
         gap: 20px;
-        transform: translateY(-100%);
+        transform: translateY(-150%);
         opacity: 0;
         transition: var(--transition);
         z-index: 999;
+        pointer-events: none;
     }
 
     .nav-links.mobile-open {
         transform: translateY(0);
         opacity: 1;
+        pointer-events: all;
     }
 
     .nav-link {
@@ -348,7 +359,8 @@ header.scrolled {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 140px 0 80px;
+    padding: 200px 0 80px;
+    /* Increased top padding to 200px */
     position: relative;
 }
 
@@ -1181,9 +1193,9 @@ header.scrolled {
    FOOTER
    ============================================ */
 .footer {
-    background: rgba(0, 0, 0, 0.5);
-    border-top: 1px solid rgba(255, 107, 53, 0.2);
-    padding: 60px 0 40px;
+    background: #000000;
+    padding: 80px 0 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-center {

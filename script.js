@@ -316,53 +316,49 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Handle form submission
+// Handle form submission
 if (contactForm) {
+    // Initialize EmailJS (Replace 'YOUR_PUBLIC_KEY' with your actual Public Key from Account > API Keys)
+    // Example: emailjs.init("user_xxxxxxxxxxxx");
+    // You need to put your PUBLIC KEY here
+    emailjs.init("YOUR_PUBLIC_KEY");
+
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const formData = {
-            name: document.getElementById('name').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            message: document.getElementById('message').value || 'No message provided'
-        };
 
         const submitBtn = contactForm.querySelector('.submit-btn');
         const originalText = submitBtn.querySelector('span').textContent;
         submitBtn.querySelector('span').textContent = 'Sending...';
         submitBtn.disabled = true;
 
+        // Collect form data
+        const templateParams = {
+            from_name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            message: document.getElementById('message').value || 'No message provided'
+        };
+
+        const serviceID = "service_ld22ohj"; // Provided by user
+        const templateID = "template_gk53aw5"; // Provided by user
+
         try {
-            // Send email using a backend service or email API
-            // For now, we'll use mailto as a fallback
-            const subject = encodeURIComponent('New Contact Form Submission from ' + formData.name);
-            const body = encodeURIComponent(
-                `Name: ${formData.name}\n` +
-                `Phone: ${formData.phone}\n` +
-                `Email: ${formData.email}\n` +
-                `Message: ${formData.message}`
-            );
+            await emailjs.send(serviceID, templateID, templateParams);
 
-            // Try to send via fetch to a backend endpoint (if configured)
-            // Otherwise, open mailto link
-            const mailtoLink = `mailto:adityabhardwaj.bd.24@gmail.com?subject=${subject}&body=${body}`;
-            window.location.href = mailtoLink;
-
-            // Show success message
+            // Success state
+            submitBtn.querySelector('span').textContent = 'Message Sent!';
             setTimeout(() => {
-                submitBtn.querySelector('span').textContent = 'Message Sent!';
-                setTimeout(() => {
-                    closeModal();
-                    contactForm.reset();
-                    submitBtn.querySelector('span').textContent = originalText;
-                    submitBtn.disabled = false;
-                }, 1500);
-            }, 500);
+                closeModal();
+                contactForm.reset();
+                submitBtn.querySelector('span').textContent = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
 
         } catch (error) {
-            console.error('Error sending message:', error);
-            submitBtn.querySelector('span').textContent = 'Error! Try Again';
+            console.error('FAILED...', error);
+            submitBtn.querySelector('span').textContent = 'Error! Check Console';
             submitBtn.disabled = false;
+            alert("Error: Please make sure you have updated the Public Key and Template ID in script.js");
             setTimeout(() => {
                 submitBtn.querySelector('span').textContent = originalText;
             }, 2000);
